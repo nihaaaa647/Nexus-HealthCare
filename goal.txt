@@ -1,0 +1,100 @@
+Goal: Design a complete, high-fidelity mock-up and detailed technical architecture for a Patient-Centric Clinical Workflow and Coordination System (PCCWCS). This system must resolve fragmented communication and delayed updates in hospital patient care by focusing on real-time visibility and structured departmental coordination around a single patient record.Part 1: Context and Core Requirements
+
+Project Name and Context: The system is being developed for the VNRVJIET AI-WEEK VIBE CODING HACKATHON (KRITHOMEDH). The core problem is the fragmentation of clinical workflows (manual requests, scattered information, delayed updates).1
+
+System Focus: The focus is strictly on patient-wise visibility, structured clinical workflows, and seamless coordination between departments, not building a full hospital management system (HMS).2
+
+Mandatory User Roles: The design must accommodate specific, distinct user interfaces for:
+
+Doctor: The primary initiator of all actions.3
+
+Nurse/Ward Staff: The primary implementer of care instructions and vital status updater.
+
+Diagnostic Unit (Lab/Imaging): The processor and updater of diagnostic results.4
+
+Pharmacy: The processor and updater of medication requests.4
+
+Core Requirement (Real-Time Visibility): Updates from any stakeholder (nurses, diagnostics, pharmacy) must be immediately visible to all others involved in the patient's treatment. The system must clearly show which actions are Completed, In-Progress, or Pending.2
+
+Part 2: Detailed UI/UX Specifications and Mockup Outline
+
+
+
+Generate a detailed outline of the three most critical screens, detailing every major component:
+
+Screen 1: The Patient Record Dashboard (PRD)
+
+Header: Must display Patient Name, ID, Attending Physician, and a prominent, color-coded Overall Patient Status (derived from the status of the most critical pending action).
+
+Primary Component: Clinical Action Timeline: A reverse chronological feed organized around the single patient record. Each entry must clearly state:3
+
+Initiator (e.g., Dr. Smith).
+
+Action Type (e.g., Prescription, Diagnostic Request).3
+
+Target Department (e.g., Pharmacy, Lab).
+
+Real-Time Status Tag: Use distinct visual indicators (color/icon) for Pending, In-Progress, or Completed.2
+
+Side Panel: Quick links for the Doctor to initiate new actions (Prescription, Diagnostic, Referral, Care Instruction).3
+
+Screen 2: Doctor Interface (Action Initiation View)
+
+Design the user flow for initiating a Diagnostic Request. Detail the necessary fields (Test Type, Urgency Level, Clinical Notes).
+
+Show how the Doctor views their personal list of assigned patients, highlighting those with critical pending updates or unreviewed diagnostic results.
+
+Screen 3: Departmental Queue (e.g., Pharmacy View)
+
+Design the queue structure: A list of all incoming tasks for that department (e.g., all Pending prescriptions).
+
+Define the interaction flow: Show the button sequence for a Pharmacist to move an item from Pending $\rightarrow$ In-Progress (Acknowledged) $\rightarrow$ Completed (Dispensed), and how this change is instantly reflected on the Patient Record Dashboard.
+
+Define the backend state machine for a 'Clinical Action.' Specify exactly which database triggers or Edge Functions are required to notify the Doctor's UI when a Pharmacy status moves to 'Completed'
+
+Part 3: Technical Architecture and Technology Stack
+
+Required Technical Stack Recommendation: Propose a modern "vibe coding" stack optimized for a hackathon's speed and real-time needs (e.g., Next.js, Supabase/Firebase, PostgreSQL, Tailwind CSS). Justify the choice based on its ability to rapidly deliver the real-time visibility requirement.
+
+Real-Time Mechanism: Detail how the requirement for "immediately visible" updates will be technically achieved (e.g., using WebSockets/Socket.io or a managed service like Supabase Realtime). Explain how a status change in the Pharmacy system instantly triggers an update on the Doctor's screen.2
+
+Data Modeling (Simplified): Outline the minimal necessary database tables and their key relationships to achieve the core goal:
+
+Patient
+
+User (with Role: Doctor, Nurse, etc.)
+
+Action (Must link back to one Patient and track Status and Target_Department).
+
+Provide the SQL DDL for the actions table, ensuring it includes a JSONB field for metadata (to handle varying requirements between Pharmacy and Lab) and a priority_level enum.
+
+Part 4: Advanced Features (The "Stretch Goals")
+
+
+
+The initial scope focused on coordination. Add these advanced features to demonstrate superior workflow management and efficiency:2
+
+Smart Prioritization: The system automatically assigns a priority (P1/P2/P3) to any new Doctor Action based on a keyword analysis of the instruction (e.g., detecting "STAT" or "ASAP"). This priority then dictates the order tasks appear in the departmental queues.
+
+Clinical Safety Check: Implement a non-blocking alert system. If a Doctor inputs a prescription that conflicts with a known patient allergy or another high-dose medication already ordered, a soft warning is displayed before the request is finalized.
+
+Embedded Departmental Chat: Add a persistent, context-aware chat tied to the Patient Record. This allows a Nurse to instantly query the prescribing Doctor about a specific Pending care instruction without leaving the patient's timeline view.
+
+Handoff Summary Generation: On command, the system aggregates all Pending and In-Progress actions over a specified time period (e.g., the last 8 hours) into a printable summary, designed for nurse shift changes.
+
+Add a 'Clinical Insights' feature: Use an LLM to summarize the 'Action Timeline' into a 3-sentence 'Condition Brief' for the Doctor, highlighting any bottlenecks where a 'Pending' action has exceeded a 2-hour threshold
+
+Part 5: Expected Output Format
+
+For each screen, specify the 'Visual Cues' (e.g., use #ef4444 for P1 Emergency tasks) and suggest a layout that minimizes 'click-fatigue' for high-stress environments like a nursing station.
+
+Provide the response using the following structure:
+
+Summary of Proposed Stack & Real-Time Strategy.
+
+UI/UX Design Outline (Screens 1, 2, 3) presented in markdown tables for clarity.
+
+Detailed Implementation Plan for Advanced Features (Smart Prioritization, Clinical Safety Check, Embedded Chat, Handoff Summary).
+
+
+

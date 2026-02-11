@@ -1,0 +1,52 @@
+[
+  {
+    "id": "p1",
+    "name": "John Doe",
+    "age": 45,
+    "gender": "Male",
+    "condition": "Pneumonia",
+    "roomNumber": "101",
+    "attendingDoctorId": "u1",
+    "allergies": [
+      "Penicillin"
+    ],
+    "admissionDate": "2023-10-25",
+    "severity": "Stable"
+  },
+  {
+    "id": "p2",
+    "name": "Jane Roe",
+    "age": 32,
+    "gender": "Female",
+    "condition": "Post-op Recovery",
+    "roomNumber": "102",
+    "attendingDoctorId": "u1",
+    "admissionDate": "2023-10-26",
+    "severity": "Stable"
+  },
+  {
+    "id": "p3",
+    "name": "Robert Brown",
+    "age": 60,
+    "gender": "Male",
+    "condition": "Cardiac Observation",
+    "roomNumber": "ICU-1",
+    "attendingDoctorId": "u1",
+    "admissionDate": "2023-10-24",
+    "severity": "Critical"
+  },
+  {
+    "name": "lola",
+    "age": 34,
+    "gender": "Female",
+    "condition": "Chest Pain",
+    "severity": "Stable",
+    "roomNumber": "101-A",
+    "attendingDoctorId": "u1",
+    "allergies": [
+      "Peanuts"
+    ],
+    "id": "p1770835475008",
+    "admissionDate": "2026-02-11T18:44:35.008Z"
+  }
+]
