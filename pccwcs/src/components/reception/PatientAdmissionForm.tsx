@@ -17,6 +17,18 @@ export function PatientAdmissionForm({ onSuccess }: { onSuccess?: () => void }) 
     const [condition, setCondition] = useState('');
     const [roomNumber, setRoomNumber] = useState('');
 
+    const [weight, setWeight] = useState('');
+    const [height, setHeight] = useState('');
+    const [bloodPressure, setBloodPressure] = useState('');
+    const [temperature, setTemperature] = useState('');
+    const [bloodGroup, setBloodGroup] = useState('');
+    const [isPregnant, setIsPregnant] = useState(false);
+    const [isBreastfeeding, setIsBreastfeeding] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [insuranceProvider, setInsuranceProvider] = useState('');
+    const [insurancePolicyNumber, setInsurancePolicyNumber] = useState('');
+    const [hasInsurance, setHasInsurance] = useState(false);
+
     // Filter for doctors
     const doctors = users.filter(u => u.role === 'Doctor');
     const [attendingDoctorId, setAttendingDoctorId] = useState(doctors[0]?.id || 'u1');
@@ -37,7 +49,17 @@ export function PatientAdmissionForm({ onSuccess }: { onSuccess?: () => void }) 
             severity,
             roomNumber,
             attendingDoctorId,
-            allergies: allergyList
+            allergies: allergyList,
+            weight: weight ? parseFloat(weight) : undefined,
+            height: height ? parseFloat(height) : undefined,
+            bloodPressure,
+            temperature: temperature ? parseFloat(temperature) : undefined,
+            bloodGroup,
+            isPregnant: gender === 'Female' ? isPregnant : false,
+            isBreastfeeding: gender === 'Female' ? isBreastfeeding : false,
+            phoneNumber,
+            insuranceProvider: hasInsurance ? insuranceProvider : undefined,
+            insurancePolicyNumber: hasInsurance ? insurancePolicyNumber : undefined,
         });
 
         // Reset form
@@ -46,6 +68,17 @@ export function PatientAdmissionForm({ onSuccess }: { onSuccess?: () => void }) 
         setCondition('');
         setRoomNumber('');
         setAllergies('');
+        setWeight('');
+        setHeight('');
+        setBloodPressure('');
+        setTemperature('');
+        setBloodGroup('');
+        setIsPregnant(false);
+        setIsBreastfeeding(false);
+        setPhoneNumber('');
+        setInsuranceProvider('');
+        setInsurancePolicyNumber('');
+        setHasInsurance(false);
 
         if (onSuccess) onSuccess();
     };
@@ -80,6 +113,101 @@ export function PatientAdmissionForm({ onSuccess }: { onSuccess?: () => void }) 
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input id="phone" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} required placeholder="+1 (555) 000-0000" />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="height">Height (cm)</Label>
+                            <Input id="height" type="number" value={height} onChange={e => setHeight(e.target.value)} placeholder="175" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="weight">Weight (kg)</Label>
+                            <Input id="weight" type="number" value={weight} onChange={e => setWeight(e.target.value)} placeholder="70" />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="bp">Blood Pressure</Label>
+                            <Input id="bp" value={bloodPressure} onChange={e => setBloodPressure(e.target.value)} placeholder="120/80" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="temp">Temperature (°C)</Label>
+                            <Input id="temp" type="number" step="0.1" value={temperature} onChange={e => setTemperature(e.target.value)} placeholder="36.6" />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="bloodGroup">Blood Group</Label>
+                        <Select value={bloodGroup} onValueChange={setBloodGroup}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select blood group" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(bg => (
+                                    <SelectItem key={bg} value={bg}>{bg}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {gender === 'Female' && (
+                        <div className="flex flex-col gap-2 p-3 border rounded-md bg-muted/20">
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="pregnant"
+                                    checked={isPregnant}
+                                    onChange={e => setIsPregnant(e.target.checked)}
+                                    className="h-4 w-4"
+                                />
+                                <Label htmlFor="pregnant" className="cursor-pointer">Patient is Pregnant</Label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="breastfeeding"
+                                    checked={isBreastfeeding}
+                                    onChange={e => setIsBreastfeeding(e.target.checked)}
+                                    className="h-4 w-4"
+                                />
+                                <Label htmlFor="breastfeeding" className="cursor-pointer">Patient is Breastfeeding</Label>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="p-3 border rounded-md space-y-3 bg-muted/10">
+                        <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-sm">Health Insurance</h4>
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="hasInsurance"
+                                    checked={hasInsurance}
+                                    onChange={e => setHasInsurance(e.target.checked)}
+                                    className="h-4 w-4"
+                                />
+                                <Label htmlFor="hasInsurance" className="cursor-pointer text-xs font-normal">Patient has insurance</Label>
+                            </div>
+                        </div>
+
+                        {hasInsurance && (
+                            <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                                <div className="space-y-2">
+                                    <Label htmlFor="insuranceProvider">Provider</Label>
+                                    <Input id="insuranceProvider" value={insuranceProvider} onChange={e => setInsuranceProvider(e.target.value)} placeholder="e.g. Blue Cross" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="policyNumber">Policy ID / Number</Label>
+                                    <Input id="policyNumber" value={insurancePolicyNumber} onChange={e => setInsurancePolicyNumber(e.target.value)} placeholder="XP-998877" />
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="space-y-2">

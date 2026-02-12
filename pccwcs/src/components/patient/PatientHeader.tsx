@@ -3,7 +3,7 @@ import { Patient, ActionStatus } from '@/lib/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { User, Calendar, Activity } from 'lucide-react';
+import { User, Calendar, Activity, Scale, Ruler, Thermometer, Droplet, Baby, Phone, Shield } from 'lucide-react';
 
 interface PatientHeaderProps {
     patient: Patient;
@@ -91,11 +91,9 @@ export function PatientHeader({ patient, overallStatus }: PatientHeaderProps) {
                                 </Select>
                             </div>
                         ) : (
-                            patient.severity && (
-                                <Badge variant={getSeverityColor(patient.severity)} className="animate-pulse">
-                                    {patient.severity.toUpperCase()}
-                                </Badge>
-                            )
+                            <Badge variant={getSeverityColor(patient.severity)}>
+                                {patient.severity}
+                            </Badge>
                         )}
                         <span className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">Current Condition</span>
                         <div className="text-xl font-medium">{patient.condition}</div>
@@ -105,9 +103,88 @@ export function PatientHeader({ patient, overallStatus }: PatientHeaderProps) {
                     </div>
                 </div>
 
+                {/* Vitals & Admin Section */}
+                {(patient.weight || patient.height || patient.bloodPressure || patient.temperature || patient.bloodGroup || patient.isPregnant || patient.isBreastfeeding || patient.phoneNumber || patient.insuranceProvider) && (
+                    <div className="mt-6 pt-4 border-t grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {patient.weight && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Weight</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Scale className="h-4 w-4 text-primary/70" />
+                                    {patient.weight} kg
+                                </div>
+                            </div>
+                        )}
+                        {patient.height && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Height</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Ruler className="h-4 w-4 text-primary/70" />
+                                    {patient.height} cm
+                                </div>
+                            </div>
+                        )}
+                        {patient.bloodPressure && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Blood Pressure</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Activity className="h-4 w-4 text-primary/70" />
+                                    {patient.bloodPressure}
+                                </div>
+                            </div>
+                        )}
+                        {patient.temperature && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Temperature</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Thermometer className="h-4 w-4 text-primary/70" />
+                                    {patient.temperature}°C
+                                </div>
+                            </div>
+                        )}
+                        {patient.bloodGroup && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Blood Group</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Droplet className="h-4 w-4 text-red-500" />
+                                    {patient.bloodGroup}
+                                </div>
+                            </div>
+                        )}
+                        {(patient.isPregnant || patient.isBreastfeeding) && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Status</span>
+                                <div className="flex gap-2">
+                                    {patient.isPregnant && <Badge variant="secondary" className="gap-1"><Baby className="h-3 w-3" /> Pregnant</Badge>}
+                                    {patient.isBreastfeeding && <Badge variant="secondary" className="gap-1"><Baby className="h-3 w-3" /> Breastfeeding</Badge>}
+                                </div>
+                            </div>
+                        )}
+                        {patient.phoneNumber && (
+                            <div className="flex flex-col">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Contact</span>
+                                <div className="flex items-center gap-1 font-medium">
+                                    <Phone className="h-4 w-4 text-primary/70" />
+                                    {patient.phoneNumber}
+                                </div>
+                            </div>
+                        )}
+                        {(patient.insuranceProvider || patient.insurancePolicyNumber) && (
+                            <div className="flex flex-col col-span-2">
+                                <span className="text-xs text-muted-foreground uppercase font-bold">Health Insurance</span>
+                                <div className="flex items-center gap-2 font-medium">
+                                    <Shield className="h-4 w-4 text-primary/70" />
+                                    <span>{patient.insuranceProvider}</span>
+                                    {patient.insurancePolicyNumber && <span className="text-muted-foreground">({patient.insurancePolicyNumber})</span>}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {patient.allergies && patient.allergies.length > 0 && (
                     <div className="mt-4 pt-4 border-t flex items-center gap-2">
-                        <span className="text-destructive font-bold text-sm uppercase">Allergies:</span>
+                        <span className="text-xs text-muted-foreground uppercase font-bold">Allergies:</span>
                         <div className="flex gap-2">
                             {patient.allergies.map(allergy => (
                                 <Badge key={allergy} variant="destructive" className="bg-red-100 text-red-700 hover:bg-red-200 border-red-200">

@@ -42,11 +42,39 @@
     "condition": "Chest Pain",
     "severity": "Stable",
     "roomNumber": "101-A",
-    "attendingDoctorId": "u1",
+    "attendingDoctorId": "u1770869848862",
     "allergies": [
       "Peanuts"
     ],
     "id": "p1770835475008",
     "admissionDate": "2026-02-11T18:44:35.008Z"
+  },
+  {
+    "name": "Damini",
+    "age": 17,
+    "gender": "Female",
+    "condition": "Body Pains",
+    "severity": "Stable",
+    "roomNumber": "104-B",
+    "attendingDoctorId": "u1770869848862",
+    "allergies": [
+      "Egg"
+    ],
+    "id": "p1770869957335",
+    "admissionDate": "2026-02-12T04:19:17.335Z"
+  },
+  {
+    "name": "Akshay",
+    "age": 20,
+    "gender": "Male",
+    "condition": "Knee pain",
+    "severity": "Stable",
+    "roomNumber": "101-A",
+    "attendingDoctorId": "u1770872012255",
+    "allergies": [
+      "Green vegetables"
+    ],
+    "id": "p1770872086229",
+    "admissionDate": "2026-02-12T04:54:46.229Z"
   }
 ]

@@ -26,12 +26,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
 
-    if (password !== 'pass123') {
-      setError('Invalid password. (Hint: pass123)');
-      return;
-    }
-
-    const success = login(username || role, role); // Use role as username if empty for quick testing
+    const success = login(username, role, password);
 
     if (success) {
       // Redirect based on role
@@ -51,11 +46,14 @@ export default function LoginPage() {
         case 'Receptionist':
           router.push('/reception');
           break;
+        case 'Admin':
+          router.push('/admin');
+          break;
         default:
           router.push('/doctor');
       }
     } else {
-      setError('Login failed. Please try again.');
+      setError('Invalid credentials. Please try again.');
     }
   };
 
@@ -90,6 +88,7 @@ export default function LoginPage() {
                   <SelectItem value="Pharmacy">Pharmacy</SelectItem>
                   <SelectItem value="Lab">Lab Technician</SelectItem>
                   <SelectItem value="Receptionist">Receptionist</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -3,16 +3,21 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Activity, Pill, User, Users } from 'lucide-react';
+import { Activity, Pill, User, Users, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useGlobal } from '@/lib/store';
 import { Badge } from '@/components/ui/badge';
 import { ModeToggle } from '@/components/mode-toggle';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const { currentUser, logout } = useGlobal();
+    const [isChangePwdOpen, setIsChangePwdOpen] = React.useState(false);
+    const [newPassword, setNewPassword] = React.useState('');
+    const { currentUser, logout, changePassword } = useGlobal();
     const router = useRouter();
 
     // If on login page, don't show full layout or show simplified
@@ -25,7 +30,18 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         router.push('/');
     };
 
+    const handleChangePassword = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (currentUser) {
+            changePassword(currentUser.id, newPassword);
+            setIsChangePwdOpen(false);
+            setNewPassword('');
+            alert('Password updated successfully');
+        }
+    };
+
     const getNavItems = () => {
+        // ... existing navigation logic
         const items = [];
         if (!currentUser) return [];
 
@@ -45,11 +61,12 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         }
         if (role === 'Receptionist') {
             items.push({ name: 'Reception', href: '/reception', icon: Users });
-            // Receptionist can also see Doctor view ideally to check status, but let's keep it simple
             items.push({ name: 'All Patients', href: '/doctor', icon: User });
         }
+        if (role === 'Admin') {
+            items.push({ name: 'Dashboard', href: '/admin', icon: Users });
+        }
 
-        // Common links if needed?
         return items;
     };
 
@@ -85,6 +102,37 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                             <div className="h-6 w-px bg-border mx-2" />
                             <div className="flex items-center gap-2">
                                 <span className="text-sm font-medium">{currentUser.name}</span>
+                                <Dialog open={isChangePwdOpen} onOpenChange={setIsChangePwdOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost" size="sm" title="Change Password">
+                                            <Lock className="h-4 w-4" />
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Change Password</DialogTitle>
+                                            <DialogDescription>
+                                                Update your password to keep your account secure.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <form onSubmit={handleChangePassword} className="space-y-4">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="current-password">New Password</Label>
+                                                <Input
+                                                    id="current-password"
+                                                    type="password"
+                                                    value={newPassword}
+                                                    onChange={(e) => setNewPassword(e.target.value)}
+                                                    placeholder="Enter new password"
+                                                    required
+                                                />
+                                            </div>
+                                            <DialogFooter>
+                                                <Button type="submit">Update Password</Button>
+                                            </DialogFooter>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
                                 <ModeToggle />
                                 <Button variant="ghost" size="sm" onClick={handleLogout}>Logout</Button>
                             </div>

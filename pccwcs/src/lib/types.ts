@@ -1,10 +1,12 @@
-export type UserRole = 'Doctor' | 'Nurse' | 'Pharmacy' | 'Lab' | 'Receptionist';
+export type UserRole = 'Doctor' | 'Nurse' | 'Pharmacy' | 'Lab' | 'Receptionist' | 'Admin';
 
 export interface User {
     id: string;
+    username: string; // Added for login
     name: string;
     role: UserRole;
     avatar?: string;
+    password?: string; // Optional for security/redaction
 }
 
 export interface Patient {
@@ -18,6 +20,16 @@ export interface Patient {
     allergies?: string[];
     admissionDate: string;
     severity?: 'Critical' | 'Urgent' | 'Stable';
+    weight?: number; // kg
+    height?: number; // cm
+    bloodGroup?: string;
+    bloodPressure?: string;
+    temperature?: number;
+    isPregnant?: boolean;
+    isBreastfeeding?: boolean;
+    phoneNumber?: string;
+    insuranceProvider?: string;
+    insurancePolicyNumber?: string;
 }
 
 export type ActionType = 'Prescription' | 'Diagnostic' | 'Referral' | 'CareInstruction' | 'Lab Request' | 'General';
@@ -36,6 +48,19 @@ export interface ClinicalAction {
     timestamp: string;
     metadata?: Record<string, any>;
     notes?: string;
+}
+
+export type AppointmentStatus = 'Scheduled' | 'Checked-in' | 'Cancelled' | 'Completed';
+
+export interface Appointment {
+    id: string;
+    patientName: string;
+    contactNumber: string;
+    doctorId: string;
+    department: string;
+    time: string; // ISO string
+    reason: string;
+    status: AppointmentStatus;
 }
 
 export interface PatientNote {

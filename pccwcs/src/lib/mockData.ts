@@ -1,11 +1,12 @@
 import { Patient, User, ClinicalAction } from './types';
 
 export const MOCK_USERS: User[] = [
-    { id: 'u1', name: 'Dr. Smith', role: 'Doctor' },
-    { id: 'u2', name: 'Nurse Sarah', role: 'Nurse' },
-    { id: 'u3', name: 'Pharmacy Unit A', role: 'Pharmacy' },
-    { id: 'u4', name: 'Lab Unit B', role: 'Lab' },
-    { id: 'u5', name: 'Receptionist', role: 'Receptionist' },
+    { id: 'u0', name: 'Admin User', username: 'admin', role: 'Admin', password: 'admin123' },
+    { id: 'u1', name: 'Dr. Smith', username: 'smith', role: 'Doctor', password: 'pass123' },
+    { id: 'u2', name: 'Sarah Jones', username: 'sarah', role: 'Nurse', password: 'pass123' },
+    { id: 'u3', name: 'Pharmacy Unit A', username: 'pharmacy', role: 'Pharmacy', password: 'pass123' },
+    { id: 'u4', name: 'Lab Unit B', username: 'lab', role: 'Lab', password: 'pass123' },
+    { id: 'u5', name: 'Front Desk', username: 'reception', role: 'Receptionist', password: 'pass123' },
 ];
 
 export const MOCK_PATIENTS: Patient[] = [
