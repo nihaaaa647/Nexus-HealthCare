@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { PatientAdmissionForm } from '@/components/reception/PatientAdmissionForm';
+import { DoctorNotifications } from '@/components/doctor/DoctorNotifications';
 
 export default function DoctorDashboard() {
     const { patients, actions, currentUser } = useGlobal();
@@ -21,6 +22,7 @@ export default function DoctorDashboard() {
 
     return (
         <div className="space-y-8">
+            <DoctorNotifications />
             <div className="flex justify-between items-center">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Doctor Dashboard</h1>

@@ -268,8 +268,15 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
     };
 
     const updateActionStatus = (actionId: string, status: ActionStatus) => {
+        const now = new Date().toISOString();
         const updatedActions = actions.map((action) =>
-            action.id === actionId ? { ...action, status } : action
+            action.id === actionId
+                ? {
+                    ...action,
+                    status,
+                    completedAt: status === 'Completed' ? now : action.completedAt
+                }
+                : action
         );
         setActions(updatedActions);
         localStorage.setItem(STORAGE_KEY_ACTIONS, JSON.stringify(updatedActions));

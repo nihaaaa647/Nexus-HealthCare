@@ -113,4 +113,28 @@ export const INITIAL_ACTIONS: ClinicalAction[] = [
         priority: 'P1',
         timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
     },
+    {
+        id: 'a4',
+        patientId: 'p2',
+        initiatorId: 'u1',
+        targetDepartment: 'Pharmacy',
+        type: 'Prescription',
+        description: 'Ibuprofen 400mg',
+        status: 'Completed',
+        priority: 'P3',
+        timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString(), // 2 hours ago
+        completedAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(), // Finished 10 mins ago (110 mins MTTC)
+    },
+    {
+        id: 'a5',
+        patientId: 'p1',
+        initiatorId: 'u1',
+        targetDepartment: 'Lab',
+        type: 'Diagnostic',
+        description: 'Blood Glucose',
+        status: 'Completed',
+        priority: 'P2',
+        timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 mins ago
+        completedAt: new Date(Date.now() - 1000 * 60 * 25).toISOString(), // Finished 25 mins ago (5 mins MTTC)
+    }
 ];

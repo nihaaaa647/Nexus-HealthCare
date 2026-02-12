@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { UserPlus, Shield, Key, LogOut } from 'lucide-react';
+import { UserPlus, Shield, Key, LogOut, Download, Activity } from 'lucide-react';
 import { UserRole } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -69,6 +69,55 @@ export default function AdminDashboard() {
         router.push('/');
     };
 
+    const handleExportCSV = () => {
+        if (!patients || patients.length === 0) {
+            alert('No patient data to export.');
+            return;
+        }
+
+        // Define headers
+        const headers = [
+            'ID', 'Name', 'Age', 'Gender', 'Condition', 'Severity',
+            'Room Number', 'Attending Doctor ID', 'Admission Date',
+            'Weight', 'Height', 'Blood Pressure', 'Temperature',
+            'Blood Group', 'Phone Number', 'Insurance Provider'
+        ];
+
+        // Map patients to CSV rows
+        const csvRows = patients.map(p => [
+            p.id,
+            `"${p.name.replace(/"/g, '""')}"`,
+            p.age,
+            p.gender,
+            `"${(p.condition || '').replace(/"/g, '""')}"`,
+            p.severity || 'Stable',
+            p.roomNumber || '',
+            p.attendingDoctorId || '',
+            p.admissionDate,
+            p.weight || '',
+            p.height || '',
+            p.bloodPressure || '',
+            p.temperature || '',
+            p.bloodGroup || '',
+            p.phoneNumber || '',
+            `"${(p.insuranceProvider || '').replace(/"/g, '""')}"`
+        ].join(','));
+
+        // Combine headers and rows
+        const csvString = [headers.join(','), ...csvRows].join('\n');
+
+        // Create Blob and download
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `patient_records_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (currentUser?.role !== 'Admin') {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen">
@@ -89,6 +138,9 @@ export default function AdminDashboard() {
                         <p className="text-muted-foreground">Manage users, roles, and system security.</p>
                     </div>
                     <div className="flex gap-4">
+                        <Button variant="outline" onClick={() => router.push('/admin/bottlenecks')}>
+                            <Activity className="mr-2 h-4 w-4" /> View Bottlenecks
+                        </Button>
                         <div className="flex items-center gap-2 px-4 py-2 bg-secondary rounded-lg">
                             <Shield className="h-5 w-5 text-primary" />
                             <span className="font-medium">Admin Mode</span>
@@ -205,9 +257,14 @@ export default function AdminDashboard() {
                 </Dialog>
                 {/* Patient Records Section */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Patient Records</CardTitle>
-                        <CardDescription>View and access all patient files.</CardDescription>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <div>
+                            <CardTitle>Patient Records</CardTitle>
+                            <CardDescription>View and access all patient files.</CardDescription>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={handleExportCSV}>
+                            <Download className="mr-2 h-4 w-4" /> Export CSV
+                        </Button>
                     </CardHeader>
                     <CardContent>
                         <div className="rounded-md border">

@@ -45,11 +45,23 @@ Five distinct interfaces, each optimized for the user's workflow:
 
 | Role | Dashboard Highlights |
 |---|---|
-| **Doctor** | Patient list, pending requests, quick actions (Prescription, Diagnostic, Nursing, Notes) |
-| **Nurse** | Priority-sorted care tasks, add custom tasks, mark completion |
+| **Doctor** | Patient list, pending requests, **AI Safety Interceptor**, quick actions |
+| **Nurse** | Priority care tasks, **AI Shift Handoff Summary**, custom task creation |
 | **Pharmacy** | Prescription queue with status pipeline |
 | **Lab** | Diagnostic request queue with result updating |
-| **Receptionist** | Patient admission form, full hospital census |
+| **Admin** | User management, password resets, **Bottleneck Analytics** |
+| **Reception** | Patient admission, insurance conditional logic, census management |
+
+### 🚀 Standout Features (New!)
+
+#### 🛡️ AI Prescription Safety Check
+Nexus uses a real-time safety interceptor to prevent medical errors. When a Doctor prescribes medication, the system cross-references it with the patient's allergy records. If a conflict is detected (e.g., Penicillin for an allergic patient), a destructive Alert pops up requiring a conscious clinician override to proceed.
+
+#### 📋 AI Nurse Shift Summary
+To solve the "fragmented handoff" problem, we implemented an AI Shift Summary service. It analyzes the last 12 hours of completed clinical actions and generates a concise 5-bullet handoff report covering Clinical Progress, Pending Risks, and Key Observations powered by **Gemini 2.5 Flash**.
+
+#### 📉 Admin Bottlenecks Dashboard
+Administrators can now monitor hospital efficiency via a live visualization of **Mean Time to Completion (MTTC)**. Using **Recharts**, we track how long each department takes to fulfill orders. Automatic **Resource Alert** badges trigger if any department exceeds a 60-minute threshold.
 
 ### 📊 Patient Record Dashboard
 - **Clinical Action Timeline** — reverse-chronological feed of all actions for a patient
@@ -85,6 +97,8 @@ Five distinct interfaces, each optimized for the user's workflow:
 | **Styling** | Tailwind CSS | Rapid prototyping with design consistency |
 | **State** | React Context + Zustand pattern | Simple, performant global state |
 | **Persistence** | Server-side JSON + localStorage | Dual-layer: API for patients, localStorage for actions |
+| **Analytics** | Recharts | MTTC visualization and bottleneck detection |
+| **AI (Simulated)** | Gemini 2.5 Flash Logic | Safety checks and handoff summarization |
 | **Theming** | next-themes | Dark/Light mode toggle |
 
 ---
@@ -93,7 +107,7 @@ Five distinct interfaces, each optimized for the user's workflow:
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/your-team/pccwcs.git
+git clone https://github.com/nihaaaa647/pccwcs.git
 cd pccwcs
 
 # 2. Install dependencies
@@ -107,11 +121,9 @@ Open **[http://localhost:3000](http://localhost:3000)** and log in.
 
 ### 🔐 Demo Credentials
 
-| Field | Value |
-|---|---|
-| **Username** | Any text (e.g., `doctor`, `nurse`) |
-| **Password** | `pass123` |
-| **Role** | Select from dropdown: Doctor, Nurse, Pharmacy, Lab, Receptionist |
+| **Username** | `admin` / `smith` / `sarah` / `pharmacy` |
+| **Password** | `admin123` (Admin) or `pass123` (Others) |
+| **Role** | Doctor, Nurse, Pharmacy, Lab, Receptionist, Admin |
 
 > 💡 **Tip:** Each role redirects to its own dashboard. Try logging in as different roles to see the full system!
 

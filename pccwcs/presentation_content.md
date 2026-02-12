@@ -76,3 +76,57 @@ Doctor (Action) $\rightarrow$ Global Store $\rightarrow$ Department Queue $\righ
     *   *Why?* Rapid UI development and consistent design system.
 *   **State Management:** **React Context + Hooks**
     *   *Why?* Lightweight, efficient state handling without the boilerplate of Redux.
+## Slide 5: Standout Feature #1 — AI Prescription Safety Check
+**Title:** Real-Time Safety Interception
+
+*   **Problem:** Clinicians are overworked; allergies are often missed in paper charts.
+*   **The Nexus Edge:** An **AI Safety Interceptor** that actively monitors prescriptions.
+*   **How it Works:** 
+    *   Cross-references every order with patient allergy records in real-time.
+    *   Uses **Gemini 2.5 Flash** (simulated) to detect semantic conflicts (e.g., "Amoxicillin" trigger for "Penicillin Allergy").
+    *   Forces a **conscious clinician override**, ensuring safety while maintaining urgent flexibility.
+*   **Impact:** Zero-miss medication safety.
+
+---
+
+## Slide 6: Standout Feature #2 — Operational Analytics & Notifications
+**Title:** Real-Time Awareness for Clinicians
+
+*   **The Problem:** Doctors often miss new assignments in a busy ward.
+*   **The Nexus Edge:** **Emergency-Aware Notifications**.
+*   **How it Works:** 
+    *   Dynamic notification bar alerts doctors *instantly* when a patient is assigned.
+    *   **Color-Coded Severity:** Red (Critical), Amber (Urgent), Blue (Stable).
+    *   Integrated with **Operational Analytics** to track fulfillment times.
+*   **Impact:** Immediate attention for critical cases, reducing patient wait times.
+
+---
+
+## Slide 7: Standout Feature #3 — AI-Powered Clinical Handoff
+**Title:** Bridging the Shift Gap
+
+*   **Problem:** Verbal handoffs are inconsistent; critical patient progress can be lost between shifts.
+*   **The Nexus Edge:** Automated **AI-Generated Shift Summaries**.
+*   **How it Works:** 
+    *   One-click analysis of the last 12 hours of *completed* clinical actions.
+    *   Uses **Gemini 2.5 Flash** (simulated) to synthesize medications, labs, and vitals into a 5-bullet transition report.
+    *   **New:** Single-click **End Shift & Download** to generate a structured handoff report (.md) for incoming staff.
+    *   Provides instant context for incoming nurses and doctors without manual searching.
+*   **Impact:** Consistent, data-backed handover that ensures continuity of care.
+
+---
+
+## Slide 8: The Roadmap & Future Scope
+**Title:** Scaling Clinical Intelligence
+
+1.  **Smart Vitals Prediction:** Predicting patient deterioration before it happens.
+2.  **Multilingual Support:** AI-powered handoffs in local Indian languages.
+3.  **FHIR Integration:** Support for global healthcare data standards.
+4.  **Integrated Telemetry:** Direct feeds from ICU monitors.
+
+---
+
+## Slide 9: Conclusion
+**Title:** Nexus — The Future of Clinical Coordination
+
+**"Built for the Krithomedh AI Week: Transforming scattered hospital data into a unified, life-saving workflow."**

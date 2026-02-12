@@ -46,6 +46,7 @@ export interface ClinicalAction {
     status: ActionStatus;
     priority: PriorityLevel;
     timestamp: string;
+    completedAt?: string;
     metadata?: Record<string, any>;
     notes?: string;
 }

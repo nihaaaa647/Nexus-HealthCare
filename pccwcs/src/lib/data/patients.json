@@ -76,5 +76,27 @@
     ],
     "id": "p1770872086229",
     "admissionDate": "2026-02-12T04:54:46.229Z"
+  },
+  {
+    "name": "Akshaya ",
+    "age": 18,
+    "gender": "Female",
+    "condition": "Fever",
+    "severity": "Stable",
+    "roomNumber": "849",
+    "attendingDoctorId": "u1770869848862",
+    "allergies": [
+      "Penicillin"
+    ],
+    "weight": 50,
+    "height": 167,
+    "bloodPressure": "120/80",
+    "temperature": 38,
+    "bloodGroup": "O-",
+    "isPregnant": false,
+    "isBreastfeeding": false,
+    "phoneNumber": "9888557742",
+    "id": "p1770876688439",
+    "admissionDate": "2026-02-12T06:11:28.439Z"
   }
 ]

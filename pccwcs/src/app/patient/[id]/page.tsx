@@ -10,6 +10,7 @@ import { ChatWidget } from '@/components/ChatWidget';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { HandoffSummary } from '@/components/patient/HandoffSummary';
 
 export default function PatientPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
@@ -51,6 +52,10 @@ export default function PatientPage({ params }: { params: Promise<{ id: string }
                 </div>
 
                 <div className="space-y-6">
+                    {(currentUser?.role === 'Nurse' || currentUser?.role === 'Admin') && (
+                        <HandoffSummary patientId={patient.id} patientName={patient.name} />
+                    )}
+
                     <QuickActions patientId={patient.id} />
 
                     <ChatWidget patientId={patient.id} />

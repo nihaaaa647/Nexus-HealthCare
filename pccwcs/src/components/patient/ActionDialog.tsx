@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ClinicalAction, ActionType, PriorityLevel } from '@/lib/types';
-import { Plus } from 'lucide-react';
+import { Plus, AlertCircle, Loader2 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface ActionDialogProps {
     patientId: string;
@@ -17,7 +18,7 @@ interface ActionDialogProps {
 }
 
 export function ActionDialog({ patientId, trigger, defaultType = 'Prescription' }: ActionDialogProps) {
-    const { addAction, currentUser } = useGlobal();
+    const { addAction, currentUser, patients } = useGlobal();
     const [open, setOpen] = useState(false);
 
     // Form State
@@ -26,9 +27,53 @@ export function ActionDialog({ patientId, trigger, defaultType = 'Prescription' 
     const [priority, setPriority] = useState<PriorityLevel>('P2');
     const [notes, setNotes] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // Safety Check State
+    const [isChecking, setIsChecking] = useState(false);
+    const [safetyConflict, setSafetyConflict] = useState<string | null>(null);
+    const [showOverride, setShowOverride] = useState(false);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // If a conflict was already shown and we are still here, it means we are trying to submit with override
+        if (safetyConflict && !showOverride) {
+            return;
+        }
+
+        // Safety Check Logic for Prescriptions
+        if (targetType === 'Prescription' && !showOverride) {
+            setIsChecking(true);
+            setSafetyConflict(null);
+
+            const patient = patients.find(p => p.id === patientId);
+            const allergies = patient?.allergies || [];
+
+            try {
+                const response = await fetch('/api/safety-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prescription: description, allergies })
+                });
+
+                const data = await response.json();
+
+                if (data.conflict) {
+                    setSafetyConflict(data.message);
+                    setShowOverride(true);
+                    setIsChecking(false);
+                    return; // Stop and show warning
+                }
+            } catch (err) {
+                console.error("Safety check failed", err);
+            }
+            setIsChecking(false);
+        }
+
+        // Proceed with Action
+        submitAction();
+    };
+
+    const submitAction = () => {
         // Determine target department based on Action Type
         let targetDept: any = 'General';
         if (targetType === 'Prescription') targetDept = 'Pharmacy';
@@ -47,14 +92,26 @@ export function ActionDialog({ patientId, trigger, defaultType = 'Prescription' 
 
         // Reset and close
         setOpen(false);
+        resetForm();
+    };
+
+    const resetForm = () => {
         setDescription('');
         setNotes('');
         setPriority('P2');
         setTargetType(defaultType);
+        setSafetyConflict(null);
+        setShowOverride(false);
+        setIsChecking(false);
+    };
+
+    const handleOpenChange = (newOpen: boolean) => {
+        if (!newOpen) resetForm();
+        setOpen(newOpen);
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 {trigger || <Button><Plus className="mr-2 h-4 w-4" /> Add Action</Button>}
             </DialogTrigger>
@@ -65,8 +122,20 @@ export function ActionDialog({ patientId, trigger, defaultType = 'Prescription' 
                         Create a new order for {targetType === 'Prescription' ? 'Pharmacy' : targetType === 'Lab Request' ? 'Lab' : 'Nursing'}.
                     </DialogDescription>
                 </DialogHeader>
+
+                {safetyConflict && (
+                    <Alert variant="destructive" className="mb-4">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Safety Conflict Detected</AlertTitle>
+                        <AlertDescription>
+                            {safetyConflict}
+                        </AlertDescription>
+                    </Alert>
+                )}
+
                 <form onSubmit={handleSubmit}>
                     <div className="grid gap-4 py-4">
+
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="type" className="text-right">
                                 Type
@@ -124,7 +193,27 @@ export function ActionDialog({ patientId, trigger, defaultType = 'Prescription' 
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Submit Order</Button>
+                        {showOverride ? (
+                            <div className="flex w-full gap-2">
+                                <Button type="button" variant="outline" className="flex-1" onClick={resetForm}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" variant="destructive" className="flex-1">
+                                    Confirm Override
+                                </Button>
+                            </div>
+                        ) : (
+                            <Button type="submit" className="w-full" disabled={isChecking}>
+                                {isChecking ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Checking Safety...
+                                    </>
+                                ) : (
+                                    "Submit Order"
+                                )}
+                            </Button>
+                        )}
                     </DialogFooter>
                 </form>
             </DialogContent>
